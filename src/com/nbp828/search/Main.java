@@ -8,11 +8,25 @@ public class Main {
     public static void main(String[] args) {
 
         // Read the doc folder
-        // Academic Docs = "/Users/neilpatel/Project/SearchEngine/SearchLucene/Docs/"
+        // Docs = "/Users/neilpatel/Project/SearchEngine/SearchLucene/Docs/";
+
+        // Filter Docs
+        DocumentFilter filter = new DocumentFilter();
+        String stopWordFile = "/Users/neilpatel/Project/SearchEngine/SearchEngineData/Assignment_initial_datasets/" +
+                "General_data/lemur-stopwords.txt";
+        String inDir = "/Users/neilpatel/Project/SearchEngine/SearchLucene/AcademicDocs/";
+        String outDir = "/Users/neilpatel/Project/SearchEngine/AcademicDocs/";
+
+        filter.RemoveStopWords(stopWordFile, inDir, outDir);
+
+
         // Create an index
         String indexPath = "../" + "Academic_Index";
-        //Indexer indexer = new Indexer();
-        //indexer.createIndex(indexPath, "/Users/neilpatel/Project/SearchEngine/SearchLucene/Docs/");
+        Indexer indexer = new Indexer();
+        indexer.createIndex(indexPath, outDir);
+
+        if (!indexPath.isBlank())
+            return;
 
         // Read the query file
         String queryPath = "/Users/neilpatel/Project/SearchEngine/SearchEngineData/Assignment_initial_datasets/General_data/testqueries2.txt";
