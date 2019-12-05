@@ -150,7 +150,7 @@ public class B25Searcher {
                 {
                     double sim = supMap.get(queryId).get(r.docId)[0];
                     double rel = supMap.get(queryId).get(r.docId)[1];
-                    r.score += Math.pow(10.0,(sim + Math.log(rel)/10.0));
+                    r.score += Math.pow(2.0,(sim + rel/2.0));
                 }
             }
         }
