@@ -17,38 +17,39 @@ public class Main {
         String inDir = "/Users/neilpatel/Project/SearchEngine/SearchLucene/AcademicDocs/";
         String outDir = "/Users/neilpatel/Project/SearchEngine/AcademicDocs/";
 
-        filter.RemoveStopWords(stopWordFile, inDir, outDir);
-
+        //!filter.RemoveStopWords(stopWordFile, inDir, outDir);
 
         // Create an index
-        String indexPath = "../" + "Academic_Index";
+        String indexPath = "../" + "General_Index";
         Indexer indexer = new Indexer();
-        indexer.createIndex(indexPath, outDir);
+        //!indexer.createIndex(indexPath, outDir);
 
-        if (!indexPath.isBlank())
-            return;
 
         // Read the query file
-        String queryPath = "/Users/neilpatel/Project/SearchEngine/SearchEngineData/Assignment_initial_datasets/General_data/testqueries2.txt";
+        //String queryPath = "/Users/neilpatel/Project/SearchEngine/SearchEngineData/Assignment_initial_datasets/" +
+        //        "Academic_papers/test_queries.txt"; // here
+        String queryPath = "/Users/neilpatel/Project/SearchEngine/SearchEngineData/Assignment_initial_datasets/" +
+                "General_data/testqueries2.txt"; // here
+
         QueryReader queryReader = new QueryReader();
         HashMap<String, String> queryMap = queryReader.Read(queryPath);
 
-        String generalDocPath = "/Users/neilpatel/Project/SearchEngine/Search_engine_competition/document_id_mapping_gen_data.txt";
+        String generalDocPath = "/Users/neilpatel/Project/SearchEngine/Search_engine_competition/" +
+                "document_id_mapping_gen_data.txt"; // here
         DocumentMappingReader docMapper = new DocumentMappingReader();
         HashMap<String, Integer> docGenMap = docMapper.CreateMapping(generalDocPath);
 
         // Search all queries with index
-        B25Searcher searcher = new B25Searcher();
-        Result[][] resultArr = new Result[queryMap.size()][100];
+        B25Searcher searcher = new B25Searcher("/Users/neilpatel/Project/SearchEngine/" +
+                "SearchEngineData/Assignment_initial_datasets/General_data/trainTestMap.txt");
+        Result[][] resultArr = new Result[queryMap.size()][docGenMap.size()];
 
         int index = 0;
         for (String s : queryMap.keySet())
         {
             Result[] values = searcher.Search(indexPath, queryMap.get(s), s);
 //            for (Result value : values){
-//                Integer item = docGenMap.get(value.docId);
-//                String itemString = item.toString();
-//                value.docId = itemString;
+//                value.score += rankmap.get(value.docId);
 //            }
             resultArr[index] = values;
             index++;
@@ -75,8 +76,6 @@ public class Main {
         {
             System.out.println(e.toString());
         }
-
-
     }
 
     private static void WriteResultsToFile(Result[][] resultsArr, String fileName)
@@ -106,12 +105,5 @@ public class Main {
         }
 
         writer.close();
-    }
-
-    private static HashMap<Integer, String> CreateMapping(String filepath)
-    {
-        // /Users/neilpatel/Project/SearchEngine/Search_engine_competition/document_id_mapping_gen_data.txt
-
-        return null;
     }
 }
